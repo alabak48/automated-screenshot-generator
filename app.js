@@ -24,7 +24,7 @@ const drive = google.drive({
     auth: oauth2Client
 })
 
-FolderId = process.env.FOLDER_ID;
+
 
 // API
 
@@ -66,7 +66,6 @@ var customerKey = process.env.API_KEY;
 var apiUrl = screenshotmachine.generateScreenshotApiUrl(customerKey, secretPhrase, options);
 
 // Screenshot + await function
-const { dirname } = require('path');
 var output = `${website.id}_${website.name}.jpg`;
 
 screenshotmachine.readScreenshot(apiUrl).pipe(fs.createWriteStream(output).on('close', async function() {
@@ -75,16 +74,19 @@ screenshotmachine.readScreenshot(apiUrl).pipe(fs.createWriteStream(output).on('c
   }));
 });
 
+const folderId = process.env.FOLDER_ID;
+
 //Function that uploads file to Google Drive
  async function uploadFile(output){
     const filePath = path.join(__dirname, output)
+    const fileMetadata = {
+        name: output,
+        parents: [folderId],
+        mimeType: 'image/jpeg'
+      };
     try {
         const response = await drive.files.create({
-            requestBody: {
-                name: output,
-                mimeType: 'image/jpeg',
-                parents: [folderId]
-            },
+            resource: fileMetadata,
             media: {
                 mimeType: 'image/jpeg',
                 body: fs.createReadStream(filePath)
