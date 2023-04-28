@@ -1,12 +1,9 @@
-import websiteName from './websiteName.js';
 require('dotenv').config();
 const path = require('path');
 const fs = require('fs');
-
+const { google } = require('googleapis');
 
 // Google OAuth2Client
-
-const { google } = require('googleapis');
 
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
@@ -27,11 +24,20 @@ const drive = google.drive({
     auth: oauth2Client
 })
 
+FolderId = process.env.FOLDER_ID;
+
 // API
 
 // npm install screenshotmachine --save
 
 var screenshotmachine = require('screenshotmachine');
+class websiteName {
+    constructor(id, name, url) {
+      this.id = id
+      this.name = name
+      this.url = url
+    }
+  }
 
 const websites = [
     new websiteName(1, "iFunded", "https://ifunded.de/en/"),
@@ -41,46 +47,49 @@ const websites = [
     new websiteName(5, "Realty Mogul", "https://www.realtymogul.com"),
 ];
 
+
 var customerKey = process.env.API_KEY;
     secretPhrase = ''; //leave secret phrase empty, if not needed
-    options = {
+    websites.forEach(website => {
+    const options = {
       //mandatory parameter
-      url : 'https://planethome-invest.com/en/',
+      url : website.url,
       // all next parameters are optional, see our website screenshot API guide for more details
       dimension : '1920x1080', // or "1366xfull" for full length screenshot
       format: 'jpg',
       cacheLimit: '0',
       delay: '200',
       zoom: '100'
-    }
+    };
+
 
 var apiUrl = screenshotmachine.generateScreenshotApiUrl(customerKey, secretPhrase, options);
 
 // Screenshot + await function
 const { dirname } = require('path');
-var output = 'ID_name.jpg';
+var output = `${website.id}_${website.name}.jpg`;
+
 screenshotmachine.readScreenshot(apiUrl).pipe(fs.createWriteStream(output).on('close', async function() {
     console.log('Screenshot saved as ' + output);
-    await uploadFile();
+    await uploadFile(output);
   }));
-  
+});
+
 //Function that uploads file to Google Drive
-
-const filePath = path.join(__dirname, 'ID_name.jpg')
-
- async function uploadFile(){
+ async function uploadFile(output){
+    const filePath = path.join(__dirname, output)
     try {
         const response = await drive.files.create({
             requestBody: {
-                name: 'ID_name.jpg',
-                mimeType: 'image/jpeg'
+                name: output,
+                mimeType: 'image/jpeg',
+                parents: [folderId]
             },
             media: {
                 mimeType: 'image/jpeg',
                 body: fs.createReadStream(filePath)
             }
         })
-
         console.log(response.data);
     } catch (error) {
         console.log(error.message);
