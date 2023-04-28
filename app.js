@@ -1,3 +1,4 @@
+import websiteName from './websiteName.js';
 require('dotenv').config();
 const path = require('path');
 const fs = require('fs');
@@ -31,6 +32,14 @@ const drive = google.drive({
 // npm install screenshotmachine --save
 
 var screenshotmachine = require('screenshotmachine');
+
+const websites = [
+    new websiteName(1, "iFunded", "https://ifunded.de/en/"),
+    new websiteName(2, "Property Partner", "www.propertypartner.co"),
+    new websiteName(3, "Property Moose", "propertymoose.co.uk"),
+    new websiteName(4, "Homegrown", "www.homegrown.co.uk"),
+    new websiteName(5, "Realty Mogul", "https://www.realtymogul.com"),
+];
 
 var customerKey = process.env.API_KEY;
     secretPhrase = ''; //leave secret phrase empty, if not needed
