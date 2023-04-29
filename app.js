@@ -2,9 +2,10 @@ require('dotenv').config();
 const path = require('path');
 const fs = require('fs');
 const { google } = require('googleapis');
+const websiteName = require('./websiteName.js');
+
 
 // Google OAuth2Client
-
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
 const REDIRECT_URI = 'https://developers.google.com/oauthplayground';
@@ -24,21 +25,7 @@ const drive = google.drive({
     auth: oauth2Client
 })
 
-
-
-// API
-
-// npm install screenshotmachine --save
-
-var screenshotmachine = require('screenshotmachine');
-class websiteName {
-    constructor(id, name, url) {
-      this.id = id
-      this.name = name
-      this.url = url
-    }
-  }
-
+// Objects
 const websites = [
     new websiteName(1, "iFunded", "https://ifunded.de/en/"),
     new websiteName(2, "Property Partner", "www.propertypartner.co"),
@@ -47,6 +34,11 @@ const websites = [
     new websiteName(5, "Realty Mogul", "https://www.realtymogul.com"),
 ];
 
+
+// API
+
+// npm install screenshotmachine --save
+var screenshotmachine = require('screenshotmachine');
 
 var customerKey = process.env.API_KEY;
     secretPhrase = ''; //leave secret phrase empty, if not needed
