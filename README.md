@@ -8,5 +8,5 @@ Google Drive API: https://developers.google.com/drive/api/guides/about-sdk <br>
 Screenshot API: https://www.screenshotmachine.com/ <br>
 Google Drive with screenshots: https://drive.google.com/drive/u/0/folders/1721LVdmrmkn-sd1qZ4kA3UBSH4zoKZsu
 #
-![image](https://user-images.githubusercontent.com/79693733/235216518-6cedf116-6955-4887-9820-706179c2a8d8.png)
+![image](https://user-images.githubusercontent.com/79693733/235313129-53debdaf-1b5f-47d8-bb51-5966f089d708.png)
 #
